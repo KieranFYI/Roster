@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<routes>
+  <route route_type="admin" route_prefix="roster" controller="Kieran\Roster:Roster" context="roster"/>
+  <route route_type="admin" route_prefix="roster" sub_name="rows" format="rows/:int&lt;row_id&gt;" controller="Kieran\Roster:Rows" context="roster"/>
+  <route route_type="public" route_prefix="roster" format=":int&lt;row_id&gt;/:int&lt;user_id&gt;" controller="Kieran\Roster:Roster" context="roster"/>
+</routes>

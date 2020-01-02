@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="admin" title="kieran_roster" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[<xf:title>{{ phrase('admin_navigation.support') }}</xf:title>
+
+<xf:macro template="section_nav_macros" name="section_nav" arg-section="roster" />]]></template>
+  <template type="admin" title="kieran_roster_rows_edit" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[<xf:if is="$row.isInsert()">
+	<xf:title>{{ phrase('kieran_support_roster_row_add') }}</xf:title>
+	<xf:else />
+	<xf:title>{{ phrase('kieran_support_roster_row_edit:') }} {$row.title}</xf:title>
+
+	<xf:pageaction>
+		<xf:button href="{{ link('roster/row/delete', $row) }}" icon="delete">{{ phrase('delete') }}</xf:button>
+	</xf:pageaction>
+
+</xf:if>
+
+<div class="block">
+	<xf:form action="{{ link('roster/rows/save', $row) }}" ajax="true" class="block-container" novalidate="novalidate">
+		<div class="block-body">
+
+			<xf:checkboxrow label="{{ phrase('enabled') }}">
+				<xf:option name="enabled" selected="$row.enabled" value="1" />
+			</xf:checkboxrow>
+
+			<xf:textboxrow name="title" value="{$row.title}"
+						   maxlength="{{ max_length($row, 'title') }}"
+						   label="{{ phrase('title') }}" />
+			
+			<xf:textarearow name="description" value="{$row.description}" autosize="true"
+				label="{{ phrase('description') }}" />
+			
+			<xf:if is="!$row.getChildren(false)">
+				<xf:numberboxrow name="row" value="{$row.row}" min="1"
+								 label="{{ phrase('kieran_roster_row') }}" />
+			</xf:if>
+			<xf:numberboxrow name="sort_order" value="{$row.sort_order}" min="1"
+							 label="{{ phrase('display_order') }}" />
+
+			<xf:if is="!$row.getChildren(false)">
+				<xf:selectrow name="parent_id" value="{$row.parent_id}"
+							  label="{{ phrase('kieran_roster_parent') }}">
+
+					<xf:option value="">&nbsp;</xf:option>
+					<xf:foreach loop="$topRows" value="$child">
+						<xf:option value="{$child.row_id}">{$child.title}</xf:option>
+					</xf:foreach>
+				</xf:selectrow>
+			</xf:if>
+
+			<xf:selectrow name="group_id" value="{$row.group_id}"
+						  label="{{ phrase('kieran_roster_group') }}"
+						  multiple="multiple">
+
+				<xf:option value="">&nbsp;</xf:option>
+				<xf:foreach loop="$groups" value="$child">
+					<xf:option value="{$child.user_group_id}">{$child.title}</xf:option>
+				</xf:foreach>
+			</xf:selectrow>
+		</div>
+
+		<xf:submitrow icon="save" sticky="true" />
+	</xf:form>
+</div>]]></template>
+  <template type="admin" title="kieran_roster_rows_list" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[<xf:title>{{ phrase('admin_navigation.rosterRows') }}</xf:title>
+
+<xf:pageaction>
+	<xf:button href="{{ link('roster/rows/add') }}" icon="add">{{ phrase('kieran_roster_row_add') }}</xf:button>
+</xf:pageaction>
+
+<xf:form action="{{ link('roster/rows/toggle') }}" class="block" ajax="true">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:datalist>
+				<xf:macro name="roster_list" arg-children="{$rows}" />
+			</xf:datalist>
+		</div>
+	</div>
+</xf:form>
+
+<xf:macro name="roster_list" arg-children="!" arg-depth="1">
+	<xf:foreach loop="$children" value="$child">
+		<xf:macro name="roster_list_entry" arg-row="{$child}" arg-children="{$child.getChildren(false)}" arg-depth="{$depth}" />
+	</xf:foreach>
+</xf:macro>
+
+<xf:macro name="roster_list_entry" arg-row="!" arg-children="!" arg-depth="1">
+	<xf:if is="$depth == 1">
+		<xf:datarow rowtype="subsection">
+			<xf:cell href="{{ link('roster/rows/edit', $row) }}" hash="{$row.row_id}">{$row.title}</xf:cell>
+			<xf:cell class="dataList-cell--min dataList-cell--hint">{$row.sort_order}</xf:cell>
+			<xf:toggle name="enabled[{$row.row_id}]" selected="$row.enabled"
+				submit="true"
+				tooltip="{{ phrase('enable_disable_x', {'title': $row.title}) }}" />
+			<xf:delete href="{{ link('roster/rows/delete', $row) }}" />
+		</xf:datarow>
+	<xf:else />
+		<xf:datarow>
+			<xf:cell href="{{ link('roster/rows/edit', $row) }}"
+				hash="{$row.row_id}"
+				class="dataList-cell--d{{ $depth - 1 }}">
+				{$row.title}
+			</xf:cell>
+			<xf:cell class="dataList-cell--min dataList-cell--hint">{$row.row} - {$row.sort_order}</xf:cell>
+			<xf:toggle name="enabled[{$row.row_id}]" selected="$row.enabled"
+				class="dataList-cell--separated" submit="true"
+				tooltip="{{ phrase('enable_disable_x', {'title': $row.title}) }}" />
+			<xf:delete href="{{ link('roster/rows/delete', $row) }}" />
+		</xf:datarow>
+	</xf:if>
+	<xf:if is="$depth == 1 AND $children is empty">
+		<xf:datarow rowclass="dataList-row--note dataList-row--noHover">
+			<xf:cell colspan="3">{{ phrase('this_section_is_currently_empty') }}</xf:cell>
+		</xf:datarow>
+	<xf:else />
+		<xf:foreach loop="$children" value="$child">
+			<xf:macro name="roster_list" arg-children="{$child}" arg-depth="{{ $depth + 1 }}" />
+		</xf:foreach>
+	</xf:if>
+</xf:macro>]]></template>
+  <template type="public" title="kieran_roster" version_id="1000030" version_string="1.0.0 Beta"><![CDATA[<xf:css src="member.less"></xf:css>
+<xf:css src="kieran_roster.less"></xf:css>
+
+<xf:if is="$single">
+	<xf:set var="$first" value="{$rows|first}" />
+	<xf:title>{{ $first.title }}</xf:title>
+	<xf:description>{{ $first.description }}</xf:description>
+	<xf:breadcrumb href="{{ link('roster') }}">{{ phrase('kieran_roster') }}</xf:breadcrumb>
+	<xf:breadcrumb href="{{ link('roster', $first) }}">{{ $first.title }}</xf:breadcrumb>
+	
+	<xf:macro template="metadata_macros" name="metadata"
+			  arg-description="{$first.description}"
+			  arg-shareUrl="{{ link('canonical:roster', $first) }}"
+			  arg-canonicalUrl="{{ link('canonical:roster', $first) }}" />
+<xf:else />
+	<xf:title>{{ phrase('kieran_roster') }}</xf:title>
+</xf:if>
+
+<xf:foreach loop="$rows" value="$row">
+	<section class="block">
+		<div class="block-container">
+			<h2 class="block-header">
+				<a href="{{ link('roster', $row) }}">{$row.title}</a>
+			</h2>
+
+			<div class="block-body">
+				<div class="block-row">
+					{$row.description}
+				</div>
+				
+				<xf:if is="$row.Children">
+					<xf:foreach loop="$row.Children" value="$children">
+						<ol class="memberOverviewBlocks memberOverviewBlocks--padding {{ $row.getSpacing($children) }}">
+							<xf:foreach loop="$children" value="$child">
+								<xf:macro name="overview_block"
+										  arg-item="{$child}" />
+							</xf:foreach>
+						</ol>
+					</xf:foreach>
+					<xf:else />
+					<ol class="memberOverviewBlocks">
+						<xf:foreach loop="$row.Users" key="$userId" value="$user">
+							<li>	
+								<xf:macro name="overview_row" arg-user="{$user}" arg-row="{$row}" />
+							</li>
+						</xf:foreach>
+					</ol>
+				</xf:if>
+			</div>
+		</div>
+	</section>
+</xf:foreach>
+
+<xf:macro name="overview_block"
+		  arg-item="!"
+		  arg-showTitle="{{ true }}">
+
+	<li class="memberOverviewBlock">
+		<xf:if is="$showTitle">
+			<h3 class="block-textHeader">
+				<a href="{{ link('roster', $item.Parent) }}"
+				   class="memberOverViewBlock-title">{$item.title}</a>
+			</h3>
+		</xf:if>
+		<xf:if is="$item.description">
+			<div class="block-row">
+				{$item.description}
+			</div>
+		</xf:if>
+		<ol class="memberOverviewBlocks">
+			<xf:foreach loop="$item.Users" key="$userId" value="$user">
+				<li>
+					<xf:macro name="overview_row" arg-user="{$user}" />
+				</li>
+			</xf:foreach>
+		</ol>
+	</li>
+</xf:macro>
+
+<xf:macro name="overview_row" arg-user="!" arg-row="!">
+	<div class="contentRow contentRow--alignMiddle">
+		<div class="contentRow-figure">
+			<xf:avatar user="$user" size="xs" />
+		</div>
+		<div class="contentRow-main">
+			<h3 class="contentRow-title"><xf:username user="$user" rich="true" /></h3>
+			<span>
+				<xf:if is="$xf.visitor->hasPermission('roster', 'edit')">
+					<i class="far fa-pen" data-xf-click="menu" style="font-size: 10px"></i>
+					<div class="menu menu--wide" data-menu="menu" aria-hidden="true"
+						 data-href="{{ link('roster/' . $row.row_id . '/' . $user.user_id . '/edit' ) }}"
+						 data-load-target=".js-filterMenuBody">
+						<div class="menu-content">
+							<h4 class="menu-header">{{ phrase('kieran_roster_edit_title:') }}</h4>
+							<div class="js-filterMenuBody">
+								<div class="menu-row">{{ phrase('loading...') }}</div>
+							</div>
+						</div>
+					</div>
+				</xf:if>
+				{{ $row.getTitle($user.user_id).title }}
+			</span>
+		</div>
+	</div>
+</xf:macro>]]></template>
+  <template type="public" title="kieran_roster.less" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[.memberOverviewBlocks {
+	&--w25 {
+		.memberOverviewBlock .memberOverviewBlocks li {
+			width: 25%;
+		}
+	}
+
+	&--w50 {
+		.memberOverviewBlock .memberOverviewBlocks li {
+			width: 50%;
+		}
+	}
+
+	&--w100 {
+		.memberOverviewBlock .memberOverviewBlocks li {
+			width: 100%;
+		}
+	}
+	
+	&.memberOverviewBlocks--padding {
+		padding: 6px;
+	}
+	
+	.block-textHeader, .block-row {
+		text-align: center;
+	}
+	
+	.memberOverviewBlocks {
+		justify-content: center;
+		
+		.contentRow-main {
+			flex: none;
+		}
+		
+		.contentRow--alignMiddle {
+			justify-content: center;
+		}
+	}
+	
+	.memberOverviewBlock {
+		padding: 0px;
+		width: 25%;
+		flex-grow: 1;
+	}
+}]]></template>
+  <template type="public" title="kieran_roster_titles_edit" version_id="1000030" version_string="1.0.0 Beta"><![CDATA[<xf:form action="{{ link('roster/' . $row.row_id . '/' . $user.user_id . '/save' ) }}">
+	<div class="menu-row menu-row--separated">
+		<div class="inputGroup u-inputSpacer">
+			<xf:textbox name="title" value="{{ $row.getTitle($user.user_id).title }}"></xf:textbox>
+		</div>
+	</div>
+	<div class="menu-footer">
+		<span class="menu-footer-controls">
+			<xf:button type="submit" class="button--primary">{{ phrase('update') }}</xf:button>
+		</span>
+	</div>
+</xf:form>]]></template>
+</templates>

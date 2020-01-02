@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="admin_navigation.roster" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Roster]]></phrase>
+  <phrase title="admin_navigation.rosterRows" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Manage Rows]]></phrase>
+  <phrase title="kieran_roster" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Roster]]></phrase>
+  <phrase title="kieran_roster_edit_title" version_id="1000030" version_string="1.0.0 Beta"><![CDATA[Edit Title]]></phrase>
+  <phrase title="kieran_roster_group" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Group ID]]></phrase>
+  <phrase title="kieran_roster_parent" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Parent Row]]></phrase>
+  <phrase title="kieran_roster_row" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Display Row]]></phrase>
+  <phrase title="kieran_roster_row_add" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Add Row]]></phrase>
+  <phrase title="kieran_support_roster_row_edit" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Edit row]]></phrase>
+  <phrase title="permission.roster_edit" version_id="1000030" version_string="1.0.0 Beta"><![CDATA[Edit Roster]]></phrase>
+</phrases>
