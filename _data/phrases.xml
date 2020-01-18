@@ -8,6 +8,8 @@
   <phrase title="kieran_roster_parent" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Parent Row]]></phrase>
   <phrase title="kieran_roster_row" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Display Row]]></phrase>
   <phrase title="kieran_roster_row_add" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Add Row]]></phrase>
+  <phrase title="kieran_roster_viewing" version_id="1000070" version_string="1.0.0"><![CDATA[Viewing Roster]]></phrase>
   <phrase title="kieran_support_roster_row_edit" version_id="1000000" version_string="1.0.0 Alpha"><![CDATA[Edit row]]></phrase>
+  <phrase title="nav.roster" version_id="1000030" version_string="1.0.0 Beta"><![CDATA[Roster]]></phrase>
   <phrase title="permission.roster_edit" version_id="1000030" version_string="1.0.0 Beta"><![CDATA[Edit Roster]]></phrase>
 </phrases>

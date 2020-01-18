@@ -117,7 +117,7 @@
 		</xf:foreach>
 	</xf:if>
 </xf:macro>]]></template>
-  <template type="public" title="kieran_roster" version_id="1000030" version_string="1.0.0 Beta"><![CDATA[<xf:css src="member.less"></xf:css>
+  <template type="public" title="kieran_roster" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:css src="member.less"></xf:css>
 <xf:css src="kieran_roster.less"></xf:css>
 
 <xf:if is="$single">
@@ -189,7 +189,7 @@
 		<ol class="memberOverviewBlocks">
 			<xf:foreach loop="$item.Users" key="$userId" value="$user">
 				<li>
-					<xf:macro name="overview_row" arg-user="{$user}" />
+					<xf:macro name="overview_row" arg-user="{$user}" arg-row="{$item}" />
 				</li>
 			</xf:foreach>
 		</ol>

@@ -73,4 +73,9 @@ class Roster extends \XF\Pub\Controller\AbstractController
 	{
 		return $this->assertRecordExists('XF:User', $id, $with, $phraseKey);
 	}
+
+	public static function getActivityDetails(array $activities)
+	{
+		return \XF::phrase('kieran_roster_viewing');
+	}
 }
