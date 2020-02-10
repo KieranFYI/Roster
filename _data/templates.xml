@@ -144,7 +144,7 @@
 
 			<div class="block-body">
 				<div class="block-row">
-					{$row.description}
+					{{ bb_code($row.description, 'roster_description', $row) }}
 				</div>
 				
 				<xf:if is="$row.Children">
@@ -183,7 +183,7 @@
 		</xf:if>
 		<xf:if is="$item.description">
 			<div class="block-row">
-				{$item.description}
+				{{ bb_code($item.description, 'roster_description', $row) }}
 			</div>
 		</xf:if>
 		<ol class="memberOverviewBlocks">
