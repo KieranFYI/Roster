@@ -33,6 +33,19 @@ class Row extends Entity
 		if (!count($this->group_id)) {
 			return [];
 		}
+		if ($this->Parent != null && count($this->Parent->Users)) {
+			$users = [];
+			foreach($this->Parent->Users as $user) {
+				$userGroups = array_merge($user->secondary_group_ids, [$user->user_group_id]);
+
+				if (!array_diff($this->group_id, $userGroups)) {
+					$users[] = $user;
+				}
+			}
+
+			return $users;
+		}
+
 		$finder = $this->finder('XF:User');
 
 		$sql = [];
