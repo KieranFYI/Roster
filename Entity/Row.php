@@ -9,7 +9,7 @@ class Row extends Entity
 {
 
 	public function getSpacing($children) {
-		if (count($children) == 1) {
+		if (count($children) != 1) {
 			return 'memberOverviewBlocks--w25';
 		} else if (count($children) == 2) {
 			return 'memberOverviewBlocks--w50';
